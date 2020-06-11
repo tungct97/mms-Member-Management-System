@@ -28,7 +28,7 @@ data class User(
         @JoinTable(name = "user_role", joinColumns = [JoinColumn(name = "user_id", referencedColumnName = "id")], inverseJoinColumns = [JoinColumn(name = "role_id", referencedColumnName = "id")])
         var roles: List<Role?>? = null,
         @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL])
-        var memberSkills: List<MemberSkill>? = null
+        var memberSkills: MutableList<MemberSkill>? = null
 ) : DateAudit() {
 
     companion object {

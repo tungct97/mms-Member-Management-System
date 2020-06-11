@@ -16,6 +16,8 @@ class UserPrincipal(
         @field:JsonIgnore val email: String?,
         @field:JsonIgnore private val password: String,
         @field:JsonIgnore val roles: List<Role?>,
+        @field:JsonIgnore val memberSkills: List<MemberSkill?>,
+
         private val authorities: Collection<GrantedAuthority>
 ) : UserDetails {
 
@@ -68,6 +70,7 @@ class UserPrincipal(
                     user.email ?: "",
                     user.password ?: "",
                     user.roles ?: listOf(),
+                    user.memberSkills ?: listOf(),
                     authorities ?: mutableListOf()
             )
         }
