@@ -1,5 +1,6 @@
 package com.example.demo.model
 
+import com.example.demo.model.role.Role
 import com.fasterxml.jackson.annotation.JsonIgnore
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
@@ -8,7 +9,15 @@ import java.util.*
 import java.util.stream.Collectors
 
 
-class UserPrincipal(val id: Long?, val name: String, private val username: String, @field:JsonIgnore val email: String?, @field:JsonIgnore private val password: String, private val authorities: Collection<GrantedAuthority>) : UserDetails {
+class UserPrincipal(
+        val id: Long?,
+        val name: String,
+        private val username: String,
+        @field:JsonIgnore val email: String?,
+        @field:JsonIgnore private val password: String,
+        @field:JsonIgnore val roles: List<Role?>,
+        private val authorities: Collection<GrantedAuthority>
+) : UserDetails {
 
     override fun getUsername(): String {
         return username
@@ -58,9 +67,9 @@ class UserPrincipal(val id: Long?, val name: String, private val username: Strin
                     user.username ?: "",
                     user.email ?: "",
                     user.password ?: "",
+                    user.roles ?: listOf(),
                     authorities ?: mutableListOf()
             )
         }
     }
-
 }

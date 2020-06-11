@@ -2,7 +2,7 @@ package com.example.demo.config
 
 import com.example.demo.security.JwtAuthenticationEntryPoint
 import com.example.demo.security.JwtAuthenticationFilter
-import com.example.demo.service.CustomUserDetailsService
+import com.example.demo.service.impl.CustomUserDetailsServiceImpl
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -26,7 +26,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 open class SecurityConfig : WebSecurityConfigurerAdapter() {
 
     @Autowired
-    private lateinit var customUserDetailService: CustomUserDetailsService
+    private lateinit var customUserDetailServiceImpl: CustomUserDetailsServiceImpl
 
     @Autowired
     private lateinit var unauthorizedHandler: JwtAuthenticationEntryPoint
@@ -38,7 +38,7 @@ open class SecurityConfig : WebSecurityConfigurerAdapter() {
 
     override fun configure(auth: AuthenticationManagerBuilder?) {
         super.configure(auth)
-        auth?.userDetailsService(customUserDetailService)?.passwordEncoder(passwordEncoder())
+        auth?.userDetailsService(customUserDetailServiceImpl)?.passwordEncoder(passwordEncoder())
     }
 
     @Bean(BeanIds.AUTHENTICATION_MANAGER)
@@ -88,6 +88,4 @@ open class SecurityConfig : WebSecurityConfigurerAdapter() {
         // Add our custom JWT security filter
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter::class.java)
     }
-
-
 }

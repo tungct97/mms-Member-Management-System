@@ -1,6 +1,6 @@
 package com.example.demo.security
 
-import com.example.demo.service.CustomUserDetailsService
+import com.example.demo.service.impl.CustomUserDetailsServiceImpl
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -22,7 +22,7 @@ class JwtAuthenticationFilter : OncePerRequestFilter() {
     private val tokenProvider: JwtTokenProvider? = null
 
     @Autowired
-    private val customUserDetailsService: CustomUserDetailsService? = null
+    private val customUserDetailsServiceImpl: CustomUserDetailsServiceImpl? = null
 
     private val logger: Logger = LoggerFactory.getLogger(JwtAuthenticationFilter::class.java)
 
@@ -32,7 +32,7 @@ class JwtAuthenticationFilter : OncePerRequestFilter() {
             val jwt = getJwtFromRequest(request)
             if (StringUtils.hasText(jwt) && tokenProvider!!.validateToken(jwt)) {
                 val userId = tokenProvider.getUserIdFromJWT(jwt)
-                val userDetails: UserDetails? = customUserDetailsService!!.loadUserById(userId!!)
+                val userDetails: UserDetails? = customUserDetailsServiceImpl!!.loadUserById(userId!!)
                 val authentication = UsernamePasswordAuthenticationToken(userDetails, null, userDetails!!.authorities)
                 authentication.details = WebAuthenticationDetailsSource().buildDetails(request)
                 SecurityContextHolder.getContext().authentication = authentication
