@@ -4,10 +4,10 @@ import com.example.demo.exception.AppException
 import com.example.demo.model.User
 import com.example.demo.model.role.Role
 import com.example.demo.model.role.RoleName
-import com.example.demo.payload.ApiResponse
-import com.example.demo.payload.JwtAuthenticationResponse
-import com.example.demo.payload.LoginRequest
-import com.example.demo.payload.SignUpRequest
+import com.example.demo.payload.response.ApiResponse
+import com.example.demo.payload.response.JwtAuthenticationResponse
+import com.example.demo.payload.request.LoginRequest
+import com.example.demo.payload.request.SignUpRequest
 import com.example.demo.repository.RoleRepository
 import com.example.demo.repository.UserRepository
 import com.example.demo.security.JwtTokenProvider
@@ -44,7 +44,7 @@ class AuthController {
 
     @PostMapping("/signin")
     fun authenticateUser(@RequestBody loginRequest: LoginRequest): ResponseEntity<*> {
-        val authentication: Authentication = authenticationManager!!.authenticate(
+        val authentication: Authentication = authenticationManager.authenticate(
                 UsernamePasswordAuthenticationToken(
                         loginRequest.usernameOrEmail,
                         loginRequest.password

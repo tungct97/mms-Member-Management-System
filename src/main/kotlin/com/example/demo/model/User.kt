@@ -4,9 +4,15 @@ import com.example.demo.model.audit.DateAudit
 import com.example.demo.model.role.Role
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.hibernate.annotations.NaturalId
+import org.springframework.data.annotation.CreatedDate
+import org.springframework.data.annotation.LastModifiedDate
+import org.springframework.data.jpa.domain.support.AuditingEntityListener
+import java.time.Instant
 import javax.persistence.*
 
 @Entity
+@EntityListeners(AuditingEntityListener::class)
+@Table(name = "users", uniqueConstraints = [UniqueConstraint(columnNames = ["username"]), UniqueConstraint(columnNames = ["email"])])
 data class User(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,8 +26,10 @@ data class User(
         var phone: String? = null,
         @ManyToMany(fetch = FetchType.EAGER)
         @JoinTable(name = "user_role", joinColumns = [JoinColumn(name = "user_id", referencedColumnName = "id")], inverseJoinColumns = [JoinColumn(name = "role_id", referencedColumnName = "id")])
-        var roles: List<Role?>? = null
-) {
+        var roles: List<Role?>? = null,
+        @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL])
+        var memberSkills: List<MemberSkill>? = null
+) : DateAudit() {
 
     companion object {
         private const val serialVersionUID = 1L
