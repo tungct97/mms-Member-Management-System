@@ -31,7 +31,7 @@ class MemberSkillServiceImpl : MemberSkillService {
     override fun addMemberSkill(id: Long, memberSkillsRequest: List<MemberSkillRequest>, currentUser: UserPrincipal): User {
         val user = userRepository.findById(id).orElseThrow { ResourceNotFoundException(USER, ID, 1L) }
 
-        val listMemberSkill = mutableListOf<MemberSkill>()
+        val listMemberSkill = user.memberSkills
 
         memberSkillsRequest.forEach {
             val memberSkill = MemberSkill()
@@ -39,7 +39,7 @@ class MemberSkillServiceImpl : MemberSkillService {
             memberSkill.user = user
             memberSkill.yearUsed = it.yearUsed
             memberSkill.skill = skillRepository.findById(it.skillId).orElseThrow { ResourceNotFoundException(SKILL, ID, 1L) }
-            listMemberSkill.add(memberSkill)
+            listMemberSkill?.add(memberSkill)
         }
 
         memberSkillRepository.saveAll(listMemberSkill)
@@ -47,6 +47,7 @@ class MemberSkillServiceImpl : MemberSkillService {
         user.memberSkills = listMemberSkill
 
         userRepository.save(user)
+
         return user
     }
 

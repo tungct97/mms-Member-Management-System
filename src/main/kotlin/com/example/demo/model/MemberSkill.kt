@@ -6,6 +6,7 @@ import javax.persistence.*
 @Entity
 data class MemberSkill(
         @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @JsonIgnore
         val id: Long? = null,
         var level: String? = null,
         var yearUsed: Int? = null,
