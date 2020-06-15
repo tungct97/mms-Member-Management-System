@@ -6,9 +6,12 @@ import javax.persistence.*
 @Entity
 data class Team(
         @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-        val id: Long? = null,
+        var id: Long? = null,
         @ManyToOne(fetch = FetchType.LAZY)
-        val leader: User? = null,
-        val name: String? = null,
-        val description: String? = null
+        var leader: User? = null,
+        var name: String? = null,
+        var description: String? = null,
+        @ManyToMany(fetch = FetchType.LAZY)
+        @JoinTable(name = "team_member", joinColumns = [JoinColumn(name = "team_id", referencedColumnName = "id")], inverseJoinColumns = [JoinColumn(name = "user_id", referencedColumnName = "id")])
+        var teamMembers: MutableList<User>? = null
 ) : UserDateAudit()
