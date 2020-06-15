@@ -29,10 +29,14 @@ class JwtAuthenticationFilter : OncePerRequestFilter() {
     @Throws(ServletException::class, IOException::class)
     override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse?, filterChain: FilterChain) {
         try {
+            val a = "tung"
+            a?.let {
+
+            }
             val jwt = getJwtFromRequest(request)
             if (StringUtils.hasText(jwt) && tokenProvider!!.validateToken(jwt)) {
                 val userId = tokenProvider.getUserIdFromJWT(jwt)
-                val userDetails: UserDetails? = customUserDetailsServiceImpl!!.loadUserById(userId!!)
+                val userDetails: UserDetails? = customUserDetailsServiceImpl?.loadUserById(userId ?: 0)
                 val authentication = UsernamePasswordAuthenticationToken(userDetails, null, userDetails!!.authorities)
                 authentication.details = WebAuthenticationDetailsSource().buildDetails(request)
                 SecurityContextHolder.getContext().authentication = authentication
