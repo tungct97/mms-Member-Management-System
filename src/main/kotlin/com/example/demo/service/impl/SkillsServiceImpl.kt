@@ -38,18 +38,18 @@ class SkillsServiceImpl : SkillService {
     }
 
     override fun getSkill(id: Long): ResponseEntity<Skill> {
-        val skill = skillsRepository.findById(id).orElseThrow { ResourceNotFoundException("Category", "id", id) }
+        val skill = skillsRepository.findById(id).orElseThrow { ResourceNotFoundException("Skill", "id", id) }
         return ResponseEntity(skill, HttpStatus.OK)
     }
 
     override fun updateSkill(id: Long, newSkill: Skill, currentUser: UserPrincipal): ResponseEntity<Skill> {
-        val skill = skillsRepository.findById(id).orElseThrow { ResourceNotFoundException("Category", "id", id) }
+        val skill = skillsRepository.findById(id).orElseThrow { ResourceNotFoundException("Skill", "id", id) }
         skill.name = newSkill.name
         return ResponseEntity(skillsRepository.save(skill), HttpStatus.OK)
     }
 
     override fun deleteSkill(id: Long, currentUser: UserPrincipal): ResponseEntity<ApiResponse> {
         skillsRepository.deleteById(id)
-        return ResponseEntity(ApiResponse(true, "You successfully deleted category"), HttpStatus.OK)
+        return ResponseEntity(ApiResponse(true, "You successfully deleted skill"), HttpStatus.OK)
     }
 }

@@ -2,6 +2,7 @@ package com.example.demo.model
 
 import com.example.demo.model.audit.DateAudit
 import com.example.demo.model.role.Role
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.hibernate.annotations.NaturalId
 import org.springframework.data.annotation.CreatedDate
@@ -28,7 +29,12 @@ data class User(
         @JoinTable(name = "user_role", joinColumns = [JoinColumn(name = "user_id", referencedColumnName = "id")], inverseJoinColumns = [JoinColumn(name = "role_id", referencedColumnName = "id")])
         var roles: List<Role?>? = null,
         @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL])
-        var memberSkills: MutableList<MemberSkill>? = null
+        var memberSkills: MutableList<MemberSkill>? = null,
+        @ManyToOne(fetch = FetchType.LAZY)
+        var position: Position? = null,
+        @OneToMany(mappedBy = "leader", cascade = [CascadeType.ALL], orphanRemoval = true)
+        @JsonIgnore
+        var teamsLead: MutableList<Team>? = null
 ) : DateAudit() {
 
     companion object {

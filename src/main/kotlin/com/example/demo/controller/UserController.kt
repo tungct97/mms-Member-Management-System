@@ -3,6 +3,7 @@ package com.example.demo.controller
 import com.example.demo.model.CurrentUser
 import com.example.demo.model.User
 import com.example.demo.model.UserPrincipal
+import com.example.demo.payload.request.UserRequest
 import com.example.demo.payload.response.PagedResponse
 import com.example.demo.service.UserService
 import com.example.demo.utils.AppConstants
@@ -24,10 +25,14 @@ class UserController {
     }
 
 
-    //Đang lỗi
     @GetMapping("/me")
     fun getCurrentUser(@CurrentUser currentUser: UserPrincipal): ResponseEntity<User>? {
         val userSummary = userService.getCurrentUser(currentUser)
         return ResponseEntity(userSummary, HttpStatus.OK)
+    }
+
+    @PostMapping("/{id}")
+    fun updateUser(@PathVariable(name = "id") id: Long, @RequestBody  newUser: UserRequest, @CurrentUser currentUser: UserPrincipal): ResponseEntity<User> {
+        return userService.updateUser(id, newUser, currentUser)
     }
 }

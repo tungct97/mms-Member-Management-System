@@ -68,7 +68,7 @@ class AuthController {
 
         // Creating user's account
         val user = User(name = signUpRequest.name, username = signUpRequest.username,
-                email = signUpRequest.email, password = signUpRequest.password)
+                email = signUpRequest.email, password = signUpRequest.password, phone = signUpRequest.phone)
         user.password = (passwordEncoder.encode(user.password))
         val roles = mutableListOf<Role?>()
         if (userRepository.count().toInt() == 0) {
